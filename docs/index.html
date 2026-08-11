@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Cowork Plans — self-service Copilot Cowork plan management</title>
+<meta name="description" content="A free Power Apps canvas app that lets people view, request, pause and manage their Copilot Cowork plans, with manager approvals and policy-aligned governance built in.">
+<style>
+  :root{
+    --bg:#f6f7fb;
+    --surface:#ffffff;
+    --surface-2:#f0f2f9;
+    --ink:#12142b;
+    --ink-soft:#4a4f6b;
+    --line:#e2e5f0;
+    --brand:#4338ca;
+    --brand-soft:#e9eaff;
+    --accent:#0f9d76;
+    --shadow:0 10px 30px rgba(18,20,43,.08);
+    --radius:16px;
+    --maxw:1120px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0e1020;
+      --surface:#171a2e;
+      --surface-2:#1e2239;
+      --ink:#eef0fa;
+      --ink-soft:#a9afc9;
+      --line:#2b3050;
+      --brand:#8b8bff;
+      --brand-soft:#232750;
+      --accent:#3fd2a5;
+      --shadow:0 10px 30px rgba(0,0,0,.45);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    line-height:1.6;
+    font-size:17px;
+  }
+  .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:24px}
+  h1,h2,h3{line-height:1.2;margin:0 0 .5em;font-weight:700;letter-spacing:-.02em}
+  h1{font-size:clamp(2.1rem,5vw,3.4rem)}
+  h2{font-size:clamp(1.6rem,3.2vw,2.3rem)}
+  h3{font-size:1.15rem}
+  p{margin:0 0 1em}
+  a{color:var(--brand)}
+  .muted{color:var(--ink-soft)}
+  .pill{
+    display:inline-block;padding:6px 14px;border-radius:999px;
+    background:var(--brand-soft);color:var(--brand);
+    font-size:.78rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  }
+  header.hero{
+    background:
+      radial-gradient(1100px 420px at 12% -10%, var(--brand-soft), transparent 65%),
+      radial-gradient(900px 380px at 92% 0%, rgba(15,157,118,.18), transparent 60%);
+    border-bottom:1px solid var(--line);
+    padding:64px 0 40px;
+    text-align:start;
+  }
+  .hero-grid{display:grid;gap:28px}
+  .lede{font-size:clamp(1.05rem,2vw,1.28rem);color:var(--ink-soft);max-width:64ch}
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+  .btn{
+    display:inline-block;padding:12px 22px;border-radius:12px;
+    text-decoration:none;font-weight:600;border:1px solid var(--brand);
+  }
+  .btn-primary{background:var(--brand);color:#fff}
+  .btn-ghost{background:transparent;color:var(--brand)}
+  .badge-free{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:999px;padding:8px 16px;font-size:.9rem;font-weight:600;
+    box-shadow:var(--shadow);
+  }
+  .shot{
+    width:100%;height:auto;display:block;border-radius:var(--radius);
+    border:1px solid var(--line);box-shadow:var(--shadow);background:var(--surface);
+  }
+  section{padding:64px 0}
+  section.alt{background:var(--surface);border-block:1px solid var(--line)}
+  .kicker{font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+  .grid{display:grid;gap:22px}
+  @media (min-width:760px){
+    .cols-2{grid-template-columns:repeat(2,1fr)}
+    .cols-3{grid-template-columns:repeat(3,1fr)}
+    .cols-4{grid-template-columns:repeat(4,1fr)}
+  }
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px;box-shadow:var(--shadow);
+  }
+  section.alt .card{background:var(--surface-2)}
+  .card h3{margin-bottom:.35em}
+  .card p{margin:0;color:var(--ink-soft);font-size:.97rem}
+  .num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:34px;height:34px;border-radius:10px;margin-bottom:12px;
+    background:var(--brand-soft);color:var(--brand);font-weight:700;
+  }
+  figure{margin:0 0 34px}
+  figure:last-of-type{margin-bottom:0}
+  figcaption{margin-top:12px;color:var(--ink-soft);font-size:.95rem}
+  figcaption b{color:var(--ink)}
+  .feature{display:grid;gap:20px;align-items:center}
+  @media (min-width:900px){
+    .feature{grid-template-columns:1fr 1fr}
+    .feature.flip .feature-text{order:2}
+  }
+  ul.check{list-style:none;padding:0;margin:0}
+  ul.check li{padding-inline-start:26px;position:relative;margin-bottom:8px;color:var(--ink-soft)}
+  ul.check li::before{content:"✓";position:absolute;inset-inline-start:0;color:var(--accent);font-weight:700}
+  .soon{
+    border:1px dashed var(--brand);border-radius:var(--radius);
+    padding:28px;text-align:center;background:var(--brand-soft);
+  }
+  .soon .pill{background:var(--surface)}
+  footer{padding:40px 0;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.92rem}
+  .disclaimer{font-size:.85rem;color:var(--ink-soft);margin-top:14px}
+  @media print{
+    body{background:#fff;font-size:12pt}
+    header.hero{background:none;padding-top:0}
+    .btn,.cta-row{display:none}
+    .card,.shot{box-shadow:none}
+    section{padding:18px 0;break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="pill">Cowork Plans · Power Apps canvas app</span>
+      <h1>Give everyone a clear, self-service way to manage their Copilot Cowork plan.</h1>
+      <p class="lede">Cowork Plans puts plan visibility, requests, pauses and approvals in one simple app — so business users choose the plan that fits the way they work, managers approve in a click, and administrators keep everything aligned with organisational policy.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#tour">Take the tour</a>
+        <a class="btn btn-ghost" href="#deploy">Deployment guide</a>
+      </div>
+      <p style="margin-top:18px"><span class="badge-free">🎁 Free to use and share — worldwide</span></p>
+    </div>
+    <img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/01-CP-Dashboard.png" alt="Cowork Plans dashboard showing Getting Started, Business and Business Plus plan cards with monthly credit allowances and a Request plan button.">
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">Why it exists</p>
+    <h2>Plan administration shouldn’t be a ticket queue</h2>
+    <p class="lede">Without a front door, people don’t know which plan they’re on, requests arrive over email and chat, approvals get lost, and admins reconcile groups and spending policies by hand. Cowork Plans replaces all of that with one transparent, governed experience.</p>
+    <div class="grid cols-4" style="margin-top:32px">
+      <div class="card">
+        <h3>See your plan</h3>
+        <p>Everyone sees their current assignment, their monthly credit allowance and how the available plans compare — at a glance.</p>
+      </div>
+      <div class="card">
+        <h3>Request an upgrade</h3>
+        <p>Pick the plan that matches the work, add a business justification, choose permanent or temporary, and submit.</p>
+      </div>
+      <div class="card">
+        <h3>Approve in the flow</h3>
+        <p>Requests route to the right manager automatically. The current plan stays active until the request is approved.</p>
+      </div>
+      <div class="card">
+        <h3>Stay in policy</h3>
+        <p>Departments only see the plans they’re entitled to, and every change lands back in the right group and spending policy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <p class="kicker">How it works</p>
+    <h2>Four steps, no training required</h2>
+    <div class="grid cols-4" style="margin-top:32px">
+      <div class="card"><span class="num">1</span><h3>Open the app</h3><p>The user is recognised automatically — their department, role and current plan are shown on entry.</p></div>
+      <div class="card"><span class="num">2</span><h3>Compare &amp; choose</h3><p>Plan cards show the monthly allowance and what each tier is best for, so the choice is obvious.</p></div>
+      <div class="card"><span class="num">3</span><h3>Submit for approval</h3><p>A confirmation dialog captures the justification, duration and end date before anything is sent.</p></div>
+      <div class="card"><span class="num">4</span><h3>Change applied</h3><p>On approval, group membership and the matching spending policy are updated — no manual admin work.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="tour">
+  <div class="wrap">
+    <p class="kicker">Product tour</p>
+    <h2>Everything the app does, screen by screen</h2>
+
+    <div class="feature" style="margin-top:36px">
+      <div class="feature-text">
+        <h3>A dashboard people actually understand</h3>
+        <p class="muted">Plans are presented as clear cards — allowance, who each tier suits, and what it unlocks. The current plan is badged, and a status panel confirms it’s active.</p>
+        <ul class="check">
+          <li>Current plan and status always visible</li>
+          <li>Side-by-side comparison of credit allowances</li>
+          <li>Approval routing shown up front, so there are no surprises</li>
+        </ul>
+      </div>
+      <figure>
+        <img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/01-CP-Dashboard.png" alt="Plan dashboard with three plan cards and a current plan status panel.">
+      </figure>
+    </div>
+
+    <div class="feature flip" style="margin-top:36px">
+      <div class="feature-text">
+        <h3>Requesting a plan takes seconds</h3>
+        <p class="muted">A confirmation dialog summarises the plan, its user limit and the approving manager, then captures a business justification and whether the change is permanent or temporary — with an end date.</p>
+        <ul class="check">
+          <li>Business justification captured with every request</li>
+          <li>Permanent or temporary, with an automatic end date</li>
+          <li>Approver named before the request is submitted</li>
+        </ul>
+      </div>
+      <figure>
+        <img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/02-CP-Request-plan.png" alt="Confirm your request dialog showing the selected Business plan, user limit, approval manager, justification text and a temporary end date.">
+      </figure>
+    </div>
+
+    <div class="feature" style="margin-top:36px">
+      <div class="feature-text">
+        <h3>Pause a plan during leave — and protect the budget</h3>
+        <p class="muted">Going on holiday or extended leave? Users can pause their subscription to a chosen date instead of consuming credits they won’t use. Pausing can be enabled or disabled centrally.</p>
+        <ul class="check">
+          <li>Self-service pause with a return date</li>
+          <li>Avoids spend on unused monthly allowances</li>
+          <li>Optional — administrators decide whether it’s available</li>
+        </ul>
+      </div>
+      <figure>
+        <img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/03-CP-Pause-plan.png" alt="Confirm your pause request dialog with a return date picker and a Pause button.">
+      </figure>
+    </div>
+
+    <div class="feature flip" style="margin-top:36px">
+      <div class="feature-text">
+        <h3>Plans tailored to each department</h3>
+        <p class="muted">Administrators choose exactly which plans each department can see and request — from the CEO Office to Front Line teams — so entitlements follow organisational policy instead of individual negotiation.</p>
+        <ul class="check">
+          <li>Per-department plan entitlements</li>
+          <li>Searchable plan catalogue with descriptions and limits</li>
+          <li>Add new tiers as your programme grows</li>
+        </ul>
+      </div>
+      <figure>
+        <img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/05-CP-Department-plans.png" alt="Department plans screen with a department list on the left and selectable plans with limits and benefits on the right.">
+      </figure>
+    </div>
+
+    <div class="feature" style="margin-top:36px">
+      <div class="feature-text">
+        <h3>Configurable in minutes, not sprints</h3>
+        <p class="muted">A single settings screen controls the pause group, app administrators, the vacation phrases the app recognises, whether pausing is enabled, and whether manager approval is required.</p>
+        <ul class="check">
+          <li>Named app administrators</li>
+          <li>Toggle pause and manager approval on or off</li>
+          <li>Localise the leave keywords the app looks for</li>
+        </ul>
+      </div>
+      <figure>
+        <img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/04-CP-App-settings.png" alt="App settings screen with pause group, app admins, vacation phrases, and toggles for pause enabled and manager approval.">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <p class="kicker">Under the hood</p>
+    <h2>Standard Microsoft 365 building blocks</h2>
+    <p class="lede">No custom infrastructure to run. The app sits on the platform you already govern — Microsoft Entra groups for membership, SharePoint lists for configuration and request history, and Copilot Cowork spending policies for the limits themselves.</p>
+    <div class="grid cols-3" style="margin-top:32px">
+      <figure>
+        <img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/06-CP-Entra-Groups.png" alt="Microsoft Entra groups used by the Cowork Plans app.">
+        <figcaption><b>Entra groups</b> — one group per plan tier drives who gets which allowance.</figcaption>
+      </figure>
+      <figure>
+        <img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/07-CP-Spending-plans.png" alt="Cost management configuration listing spending policies with per-user monthly credit limits.">
+        <figcaption><b>Spending policies</b> — each group maps to a policy with its own per-user monthly limit.</figcaption>
+      </figure>
+      <figure>
+        <img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/08-CP-SPO-lists.png" alt="SharePoint lists holding the app's configuration and request data.">
+        <figcaption><b>SharePoint lists</b> — settings, department entitlements and a full request trail.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">The payoff</p>
+    <h2>What you get on day one</h2>
+    <div class="grid cols-3" style="margin-top:32px">
+      <div class="card"><h3>Transparency</h3><p>People stop asking “which plan am I on?” — and admins get a written record of every request, justification and approval.</p></div>
+      <div class="card"><h3>Less admin effort</h3><p>Group membership and spending policy changes follow the approval instead of a manual checklist.</p></div>
+      <div class="card"><h3>Cost control</h3><p>Entitlements per department, manager approval for upgrades, and pausing during leave keep consumption intentional.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="deploy">
+  <div class="wrap">
+    <div class="soon">
+      <span class="pill">Coming soon</span>
+      <h2 style="margin-top:14px">Deployment instructions</h2>
+      <p class="muted" style="max-width:60ch;margin-inline:auto">Step-by-step setup — importing the solution, creating the Entra groups and spending policies, provisioning the SharePoint lists and configuring app settings — will be published here shortly.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Cowork Plans</strong> — shared free of charge for organisations worldwide.</p>
+    <p class="disclaimer">Provided as-is, without warranty of any kind. Screenshots show sample data from a demonstration environment. Microsoft, Microsoft 365, Copilot, Power Apps, SharePoint and Microsoft Entra are trademarks of the Microsoft group of companies.</p>
+  </div>
+</footer>
+
+</body>
+</html>

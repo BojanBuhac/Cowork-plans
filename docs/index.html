@@ -75,6 +75,10 @@
   }
   .btn-primary{background:var(--brand);color:#fff}
   .btn-ghost{background:transparent;color:var(--brand)}
+  .version{
+    margin-top:10px;font-size:.82rem;color:var(--ink-soft);letter-spacing:.01em;
+  }
+  .version strong{font-weight:600;color:var(--ink)}
   .badge-free{
     display:inline-flex;align-items:center;gap:8px;
     background:var(--surface);border:1px solid var(--line);
@@ -174,10 +178,6 @@
     border:1px solid transparent;white-space:nowrap;
   }
   .navlink:hover{color:var(--ink);background:var(--surface-2)}
-  .navcta{
-    color:var(--brand);border-color:var(--brand);
-  }
-  .navcta:hover{background:var(--brand);color:#fff}
   .page{display:block}
   #page-deploy{display:none}
   body:has(#page-deploy:target) #page-home,
@@ -287,7 +287,6 @@
     <div class="navlinks">
       <a class="navlink nav-home" href="#page-home">Overview</a>
       <a class="navlink nav-deploy" href="#page-deploy">Deployment guide</a>
-      <a class="navlink navcta" href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">&#11015; Download</a>
     </div>
   </div>
 </nav>
@@ -479,6 +478,7 @@
       <a class="btn btn-primary" href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">&#11015; Download the solution</a>
       <a class="btn btn-ghost" href="https://github.com/BojanBuhac/Cowork-plans/tree/main/solution">&#11015; Download the 5 CSV files</a>
     </div>
+    <p class="version">Current version: <strong>CoworkPlan_1_0_0_9.zip</strong></p>
   </div>
 </header>
 
@@ -723,7 +723,8 @@
       </ol>
       <h4>8.2 Get the solution package</h4>
       <p class="muted">Download the ready-made package - no source environment needed:</p>
-      <p><a class="btn btn-primary" href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">⬇ CoworkPlan_1_0_0_9.zip</a> <span class="muted" style="font-size:.9rem">· <a href="https://github.com/BojanBuhac/Cowork-plans/blob/main/solution/CoworkPlan_1_0_0_9.zip">view on GitHub</a></span></p>
+      <p><a class="btn btn-primary" href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">⬇ Download the solution</a></p>
+      <p class="version" style="margin-bottom:1.2em">Current version: <strong>CoworkPlan_1_0_0_9.zip</strong> · <a href="https://github.com/BojanBuhac/Cowork-plans/blob/main/solution/CoworkPlan_1_0_0_9.zip">view on GitHub</a></p>
       <p class="note">Some browsers flag .zip downloads - choose <strong>Keep</strong>. Do not unzip the file; Power Platform imports the .zip as-is.</p>
       <p class="muted" style="font-size:.94rem">Exporting from your own environment instead? Open <code>make.powerapps.com</code> → <strong>Solutions</strong> → select the solution → <strong>Export solution</strong> → <strong>Publish</strong> all customisations → <strong>Next</strong> → choose <strong>Managed</strong> for production (<strong>Unmanaged</strong> only if you intend to keep customising) → <strong>Export</strong>.</p>
       <h4>8.3 Import into the target environment</h4>

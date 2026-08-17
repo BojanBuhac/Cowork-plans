@@ -545,7 +545,7 @@
   <div class="wrap">
     <span class="pill">Deployment guide</span>
     <h1>Deploy Cowork Plans in your own tenant</h1>
-    <p class="lede">Nine steps to stand up the SharePoint data layer, Entra security groups, Cowork spending policies and the Power Platform solution. Allow around 90 minutes end to end.</p>
+    <p class="lede">Ten steps to stand up the SharePoint data layer, Entra security groups, Cowork spending policies, the Power Platform solution and the site permissions that let everyone submit requests. Allow around 90 minutes end to end.</p>
     <div class="cta-row">
       <a class="btn btn-primary" href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">&#11015; Download the solution</a>
       <a class="btn btn-ghost" href="https://github.com/BojanBuhac/Cowork-plans/tree/main/solution">&#11015; Download the 5 CSV files</a>
@@ -559,7 +559,7 @@
 
     <div class="prereq">
       <h3>Before you start - you need</h3>
-      <p>SharePoint Administrator (or site-creation rights), Entra ID Groups Administrator (to create security groups), Copilot/Cowork admin rights (to create spending policies), and System Administrator on the target Power Platform environment. Complete the steps <strong>in order</strong> - later steps depend on IDs produced by earlier ones.</p>
+      <p>SharePoint Administrator (or site-creation rights), Site Owner on the new site (to set permissions), Entra ID Groups Administrator (to create security groups), Copilot/Cowork admin rights (to create spending policies), and System Administrator on the target Power Platform environment. Complete the steps <strong>in order</strong> - later steps depend on IDs produced by earlier ones.</p>
       <p style="margin-top:12px"><strong>Download first:</strong> the <a href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">solution package</a> (Step 8) and the <a href="https://github.com/BojanBuhac/Cowork-plans/tree/main/solution">five CSV files</a> (Step 2). Both are in the same <code>/solution</code> folder of the repository.</p>
     </div>
 
@@ -574,7 +574,8 @@
         <li><a href="#d6">Populate Security Group ID on the Cowork Plans list</a></li>
         <li><a href="#d7">Create the Cowork spending policies</a></li>
         <li><a href="#d8">Import the solution into Power Platform</a></li>
-        <li><a href="#d9">Post-deployment verification checklist</a></li>
+        <li><a href="#d9">Give everyone permission to submit requests</a></li>
+        <li><a href="#d10">Post-deployment verification checklist</a></li>
       </ol>
     </div>
 
@@ -839,7 +840,76 @@
     </div>
 
     <div class="step" id="d9">
-      <h3><span class="num">9</span> Post-deployment verification checklist</h3>
+      <h3><span class="num">9</span> Give everyone permission to submit requests</h3>
+      <div><span class="meta">Site Owner · ~15 minutes</span></div>
+      <p class="muted">Users write directly to the <strong>Cowork Plan Requests</strong> list when they submit a plan request, so they need more than read access on that one list - but nothing more anywhere else on the site. The pattern below grants exactly that: <strong>Visitor</strong> (read-only) across the site, plus a purpose-built permission level on the requests list alone.</p>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Who</th><th>Site-level access</th><th>On the Cowork Plan Requests list</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Everyone except external users</strong></td><td>Visitors (read)</td><td>The custom <strong>Submit request</strong> level from 9.2</td></tr>
+          <tr><td><strong>App administrators</strong></td><td>Members (edit) at minimum</td><td>Inherited from their site membership</td></tr>
+          <tr><td><strong>External users</strong></td><td>No access</td><td>No access</td></tr>
+        </tbody>
+      </table></div>
+
+      <h4>9.1 Add everyone as Visitors</h4>
+      <ol>
+        <li>On the site, select the gear icon → <strong>Site permissions</strong> → <strong>Advanced permissions settings</strong>.</li>
+        <li>Open the <strong>Cowork Plan Management Visitors</strong> group → <strong>New → Add users to this group</strong>.</li>
+        <li>Add the <strong>Everyone except external users</strong> claim and select <strong>Share</strong>.</li>
+        <li>Add your app administrators to the <strong>Members</strong> group (Edit) or the <strong>Owners</strong> group - they maintain the plan catalogue, departments and app settings, which Visitors cannot change.</li>
+      </ol>
+      <p class="warn">Do not grant Edit to everyone as a shortcut. Site-wide Edit would let any user rewrite the plan catalogue, department entitlements and app settings, and delete other people's requests.</p>
+      <figure>
+        <a class="zoom" href="#lb-advperm" aria-label="Enlarge the advanced permissions screenshot"><img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/30-AdvancedPermissions.png" alt="Site permissions page with the Advanced permissions settings link."></a>
+        <figcaption>Site permissions - open <b>Advanced permissions settings</b> to reach the classic page used throughout this step.</figcaption>
+      </figure>
+
+      <h4>9.2 Create the “Submit request” permission level</h4>
+      <p class="muted">Visitors cannot create list items, and Contribute would let users delete their own rows - which would break the request history the flows rely on. Copy <strong>Edit</strong> and remove the two capabilities you do not want:</p>
+      <ol>
+        <li>On the advanced permissions page, select <strong>Permission Levels</strong> in the ribbon.</li>
+        <li>Select the <strong>Edit</strong> permission level, scroll to the bottom and select <strong>Copy Permission Level</strong>.</li>
+        <li>Name it <code>Submit request</code> (add a short description, e.g. “Add and edit own requests; cannot delete”).</li>
+        <li>Clear <strong>Delete Items</strong> and <strong>Delete Versions</strong>.</li>
+        <li>Clear <strong>View Application Pages</strong>.</li>
+        <li>Select <strong>Create</strong>.</li>
+      </ol>
+      <figure>
+        <a class="zoom" href="#lb-permlevels" aria-label="Enlarge the permission levels screenshot"><img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/31-PermissionLevels.png" alt="Permission levels page listing the site's permission levels."></a>
+        <figcaption>The <b>Permission Levels</b> page - this is where the new level is created.</figcaption>
+      </figure>
+      <figure>
+        <a class="zoom" href="#lb-copylevel" aria-label="Enlarge the copy permission level screenshot"><img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/32-CopyEditPermissionLevel.png" alt="Copy Permission Level button at the bottom of the Edit permission level page."></a>
+        <figcaption>Copy the built-in <b>Edit</b> level rather than building one from scratch.</figcaption>
+      </figure>
+      <figure>
+        <a class="zoom" href="#lb-uncheck" aria-label="Enlarge the unchecked delete permissions screenshot"><img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/33-UncheckDelete.png" alt="Permission level form with Delete Items and Delete Versions cleared."></a>
+        <figcaption>Clear the delete permissions - and <b>View Application Pages</b> further down the form.</figcaption>
+      </figure>
+
+      <h4>9.3 Apply it to the Cowork Plan Requests list</h4>
+      <ol>
+        <li>Open the <strong>Cowork Plan Requests</strong> list → gear icon → <strong>List settings</strong> → <strong>Permissions for this list</strong>.</li>
+        <li>Select <strong>Stop Inheriting Permissions</strong> and confirm. The list now has its own permissions, independent of the site.</li>
+        <li>Select <strong>Grant Permissions</strong>.</li>
+        <li>Enter <strong>Everyone except external users</strong>, open <strong>Show options</strong>, and choose the <strong>Submit request</strong> level.</li>
+        <li>Clear the option to send an e-mail invitation, then select <strong>Share</strong>.</li>
+        <li>Confirm the app administrators still hold Edit or Full Control on the list.</li>
+      </ol>
+      <figure>
+        <a class="zoom" href="#lb-listperm" aria-label="Enlarge the list permissions screenshot"><img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/34-RequestListsPermissions.png" alt="Permissions page for the Cowork Plan Requests list with the Stop Inheriting Permissions option."></a>
+        <figcaption>Break inheritance on the requests list only - leave every other list inheriting from the site.</figcaption>
+      </figure>
+      <figure>
+        <a class="zoom" href="#lb-grant" aria-label="Enlarge the grant permissions screenshot"><img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/35-SetUniquePermissionsAddEveryone.png" alt="Grant permissions dialog adding Everyone except external users with the custom permission level."></a>
+        <figcaption>Grant <b>Everyone except external users</b> the custom level on this list.</figcaption>
+      </figure>
+      <p class="note">Permission changes can take a few minutes to propagate. If a pilot user hits an error when submitting, wait, then have them re-open the app before investigating further.</p>
+    </div>
+
+    <div class="step" id="d10">
+      <h3><span class="num">10</span> Post-deployment verification checklist</h3>
       <div><span class="meta">~15 minutes · run this end to end before announcing the app</span></div>
       <ul class="checklist">
         <li>Communication site exists and is <strong>not</strong> group/Teams connected.</li>
@@ -852,6 +922,9 @@
         <li>Departments and Department plans populated for at least one pilot department.</li>
         <li>Five spending policies created (four plans + pause), each targeting the correct security group; the pause policy uses the minimum credit allowance.</li>
         <li>Solution imported, all connections green, all flows On, app published and shared.</li>
+        <li><strong>Everyone except external users</strong> is in the site <strong>Visitors</strong> group; app administrators are Members or Owners.</li>
+        <li>The <strong>Submit request</strong> permission level exists, with delete and View Application Pages cleared.</li>
+        <li><strong>Cowork Plan Requests</strong> has unique permissions, granting <strong>Everyone except external users</strong> the <strong>Submit request</strong> level.</li>
       </ul>
       <p class="note"><strong>Smoke test:</strong> submit a plan request as a pilot user → the approval reaches the manager → approve → a new row lands in Cowork Plan Requests with the correct SecurityGroupID → the user appears in the matching Entra group within a few minutes → the spending policy applies to that user.</p>
       <p class="note"><strong>Rollback:</strong> if the smoke test fails, turn the flows Off, correct the configuration (usually a list name, an environment variable, or a mismatched group ID), turn the flows back On and re-run the test. No data is lost - all state lives in the SharePoint lists.</p>
@@ -861,6 +934,12 @@
   </div>
 </section>
 <div class="lightbox" id="lb-departments2"><a class="lb-backdrop" href="#d6" aria-label="Close"></a><a class="lb-close" href="#d6" aria-label="Close">&times;</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/05-CP-Department-plans.png" alt="Full size: department plans screen."></div>
+<div class="lightbox" id="lb-advperm"><a class="lb-backdrop" href="#d9" aria-label="Close"></a><a class="lb-close" href="#d9" aria-label="Close">&times;</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/30-AdvancedPermissions.png" alt="Full size: site permissions page."></div>
+<div class="lightbox" id="lb-permlevels"><a class="lb-backdrop" href="#d9" aria-label="Close"></a><a class="lb-close" href="#d9" aria-label="Close">&times;</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/31-PermissionLevels.png" alt="Full size: permission levels page."></div>
+<div class="lightbox" id="lb-copylevel"><a class="lb-backdrop" href="#d9" aria-label="Close"></a><a class="lb-close" href="#d9" aria-label="Close">&times;</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/32-CopyEditPermissionLevel.png" alt="Full size: copy permission level."></div>
+<div class="lightbox" id="lb-uncheck"><a class="lb-backdrop" href="#d9" aria-label="Close"></a><a class="lb-close" href="#d9" aria-label="Close">&times;</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/33-UncheckDelete.png" alt="Full size: cleared delete permissions."></div>
+<div class="lightbox" id="lb-listperm"><a class="lb-backdrop" href="#d9" aria-label="Close"></a><a class="lb-close" href="#d9" aria-label="Close">&times;</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/34-RequestListsPermissions.png" alt="Full size: requests list permissions."></div>
+<div class="lightbox" id="lb-grant"><a class="lb-backdrop" href="#d9" aria-label="Close"></a><a class="lb-close" href="#d9" aria-label="Close">&times;</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/35-SetUniquePermissionsAddEveryone.png" alt="Full size: grant permissions dialog."></div>
 <div class="lightbox" id="lb-envvars"><a class="lb-backdrop" href="#d8" aria-label="Close"></a><a class="lb-close" href="#d8" aria-label="Close">&times;</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/20-Deploy-Environment-Vars.png" alt="Full size: solution import environment variables page."></div>
 </div>
 

@@ -178,6 +178,56 @@
     border:1px solid transparent;white-space:nowrap;
   }
   .navlink:hover{color:var(--ink);background:var(--surface-2)}
+  /* Side ribbon: sister solution - 2 columns x 1 row */
+  .ribbon{
+    position:fixed;z-index:55;
+    inset-inline-end:0;inset-block-start:34%;
+    display:grid;
+    grid-template-columns:46px 264px;   /* col 1 = purple tab, col 2 = card */
+    align-items:stretch;
+    transform:translateX(264px);        /* card parked off-screen */
+    transition:transform .32s ease;
+  }
+  .ribbon:target{transform:translateX(0)}
+  /* column 1 - the always-visible purple tab */
+  .ribbon-tab{
+    grid-column:1;grid-row:1;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--brand);color:#fff;
+    border-radius:0 14px 14px 0; /* rotate(180deg) below flips this to the left edge */
+    font-size:.72rem;font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;text-decoration:none;
+    writing-mode:vertical-rl;transform:rotate(180deg);
+    box-shadow:-6px 8px 22px rgba(18,20,43,.16);
+  }
+  .ribbon-tab:hover{filter:brightness(1.12)}
+  .ribbon-tab:focus-visible{outline:3px solid var(--ink);outline-offset:-4px}
+  .ribbon-tab-close{display:none}
+  .ribbon:target .ribbon-tab{display:none}
+  .ribbon:target .ribbon-tab-close{display:flex}
+  /* column 2 - the card that slides into view */
+  .ribbon-body{
+    grid-column:2;grid-row:1;
+    background:var(--surface);
+    border:1px solid var(--line);border-inline-start:none;
+    border-radius:0;
+    box-shadow:-8px 10px 30px rgba(18,20,43,.14);
+    padding:18px 20px;
+  }
+  .ribbon-eyebrow{
+    display:block;font-size:.66rem;font-weight:800;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:5px;
+  }
+  .ribbon-title{display:block;font-weight:700;font-size:.98rem;line-height:1.25;margin-bottom:6px}
+  .ribbon-text{display:block;margin:0;font-size:.78rem;line-height:1.45;color:var(--ink-soft)}
+  .ribbon-text b{color:var(--ink)}
+  .ribbon-go{display:inline-block;margin-top:10px;font-size:.78rem;font-weight:700;color:var(--brand);text-decoration:none}
+  .ribbon-go:hover{text-decoration:underline}
+  @media (max-width:1180px){
+    .ribbon{grid-template-columns:46px 240px;transform:translateX(240px)}
+    .ribbon:target{transform:translateX(0)}
+  }
+  @media (max-width:760px){.ribbon{display:none}}
   .page{display:block}
   #page-deploy{display:none}
   body:has(#page-deploy:target) #page-home,
@@ -266,7 +316,7 @@
   .step figure{margin:18px 0 0}
   @media print{
     .lightbox{display:none !important}
-    .topnav{display:none}
+    .topnav,.ribbon{display:none}
     .page,#page-deploy{display:block !important}
     .step,.toc{box-shadow:none;break-inside:avoid}
     .toc ol{columns:1}
@@ -292,6 +342,17 @@
 </nav>
 
 <div id="page-home" class="page">
+<aside class="ribbon" id="ribbon">
+  <a class="ribbon-tab" href="#ribbon" aria-label="Open: also new, AI Agent Central">Also new</a>
+  <a class="ribbon-tab ribbon-tab-close" href="#page-home" aria-label="Close">Close</a>
+  <div class="ribbon-body">
+    <span class="ribbon-eyebrow">New solution</span>
+    <span class="ribbon-title">AI Agent Central v3</span>
+    <p class="ribbon-text">A unified command center for the AI agent lifecycle - from intake and assessment through deployment, adoption, and continuous improvement - now with native <b>Agent 365</b> integration.</p>
+    <a class="ribbon-go" href="https://bojanbuhac.github.io/AI-Agent-Central/" target="_blank" rel="noopener">Take a look &#8599;</a>
+  </div>
+</aside>
+
 <header class="hero">
   <div class="wrap hero-grid">
     <div>
@@ -469,6 +530,17 @@
 </div>
 
 <div id="page-deploy" class="page">
+<aside class="ribbon" id="ribbon-d">
+  <a class="ribbon-tab" href="#ribbon-d" aria-label="Open: also new, AI Agent Central">Also new</a>
+  <a class="ribbon-tab ribbon-tab-close" href="#page-deploy" aria-label="Close">Close</a>
+  <div class="ribbon-body">
+    <span class="ribbon-eyebrow">New solution</span>
+    <span class="ribbon-title">AI Agent Central v3</span>
+    <p class="ribbon-text">A unified command center for the AI agent lifecycle - from intake and assessment through deployment, adoption, and continuous improvement - now with native <b>Agent 365</b> integration.</p>
+    <a class="ribbon-go" href="https://bojanbuhac.github.io/AI-Agent-Central/" target="_blank" rel="noopener">Take a look &#8599;</a>
+  </div>
+</aside>
+
 <header class="hero">
   <div class="wrap">
     <span class="pill">Deployment guide</span>

@@ -118,11 +118,6 @@
   ul.check{list-style:none;padding:0;margin:0}
   ul.check li{padding-inline-start:26px;position:relative;margin-bottom:8px;color:var(--ink-soft)}
   ul.check li::before{content:"✓";position:absolute;inset-inline-start:0;color:var(--accent);font-weight:700}
-  .soon{
-    border:1px dashed var(--brand);border-radius:var(--radius);
-    padding:28px;text-align:center;background:var(--brand-soft);
-  }
-  .soon .pill{background:var(--surface)}
   footer{padding:40px 0;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.92rem}
   .disclaimer{font-size:.85rem;color:var(--ink-soft);margin-top:14px}
   /* Click-to-enlarge (CSS only) */
@@ -157,7 +152,80 @@
     font-size:1.7rem;line-height:1;text-decoration:none;
   }
   .lb-close:hover{background:rgba(255,255,255,.3)}
+
+  /* Deployment guide */
+  .prereq{
+    background:var(--brand-soft);border:1px solid var(--line);
+    border-radius:var(--radius);padding:22px 26px;margin-block:28px;
+  }
+  .prereq h3{margin-bottom:.4em}
+  .prereq p{margin:0;color:var(--ink-soft)}
+  .toc{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 26px;box-shadow:var(--shadow);margin-bottom:36px;
+  }
+  .toc h3{margin-bottom:.6em}
+  .toc ol{margin:0;padding-inline-start:22px;columns:2;column-gap:36px}
+  .toc li{margin-bottom:6px;color:var(--ink-soft);break-inside:avoid}
+  .toc a{text-decoration:none}
+  .toc a:hover{text-decoration:underline}
+  @media (max-width:700px){.toc ol{columns:1}}
+  .step{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 28px;box-shadow:var(--shadow);margin-bottom:22px;
+  }
+  .step > h3{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:1.3rem}
+  .step > h3 .num{margin-bottom:0;flex:none}
+  .step h4{font-size:1rem;margin:1.4em 0 .5em;color:var(--ink)}
+  .meta{
+    display:inline-block;margin-bottom:14px;font-size:.83rem;font-weight:600;
+    color:var(--ink-soft);background:var(--surface-2);
+    border:1px solid var(--line);border-radius:999px;padding:4px 13px;
+  }
+  .step ol,.step ul{padding-inline-start:22px;margin:0 0 1em;color:var(--ink-soft)}
+  .step li{margin-bottom:7px}
+  .step li > strong,.step p > strong{color:var(--ink)}
+  code{
+    font-family:"Cascadia Code",Consolas,"SF Mono",Menlo,monospace;
+    font-size:.88em;background:var(--surface-2);border:1px solid var(--line);
+    border-radius:6px;padding:1px 6px;word-break:break-word;
+  }
+  .tablewrap{overflow-x:auto;margin:0 0 1.2em;-webkit-overflow-scrolling:touch}
+  table{
+    border-collapse:collapse;width:100%;min-width:460px;
+    font-size:.93rem;background:var(--surface);
+  }
+  th,td{
+    text-align:start;vertical-align:top;padding:10px 14px;
+    border-block-end:1px solid var(--line);color:var(--ink-soft);
+  }
+  th{
+    background:var(--surface-2);color:var(--ink);font-weight:700;
+    font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;
+    border-block-end:2px solid var(--line);
+  }
+  tbody tr:last-child td{border-block-end:none}
+  td strong{color:var(--ink)}
+  .note,.warn{
+    border-radius:12px;padding:14px 18px;margin:0 0 1.2em;
+    font-size:.94rem;color:var(--ink-soft);
+    border-inline-start:4px solid var(--brand);background:var(--brand-soft);
+  }
+  .warn{border-inline-start-color:#d97706;background:rgba(217,119,6,.11)}
+  .note strong,.warn strong{color:var(--ink)}
+  ul.checklist{list-style:none;padding:0;margin:0 0 1em}
+  ul.checklist li{
+    position:relative;padding-inline-start:34px;margin-bottom:9px;color:var(--ink-soft);
+  }
+  ul.checklist li::before{
+    content:"";position:absolute;inset-inline-start:0;inset-block-start:4px;
+    width:18px;height:18px;border:2px solid var(--brand);border-radius:5px;
+  }
+  .step figure{margin:18px 0 0}
   @media print{
+    .lightbox{display:none !important}
+    .step,.toc{box-shadow:none;break-inside:avoid}
+    .toc ol{columns:1}
     .lightbox{display:none !important}
     body{background:#fff;font-size:12pt}
     header.hero{background:none;padding-top:0}
@@ -176,7 +244,8 @@
       <h1>Give everyone a clear, self-service way to manage their Copilot Cowork plan.</h1>
       <p class="lede">Cowork Plans puts plan visibility, requests, pauses and approvals in one simple app - so business users choose the plan that fits the way they work, managers approve in a click, and administrators keep everything aligned with organisational policy.</p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="#tour">Take the tour</a>
+        <a class="btn btn-ghost" href="#tour">Take the tour</a>
+        <a class="btn btn-primary" href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">⬇ Download the solution</a>
         <a class="btn btn-ghost" href="#deploy">Deployment guide</a>
       </div>
       <p style="margin-top:18px"><span class="badge-free">🎁 Free to use and share - worldwide</span></p>
@@ -342,22 +411,323 @@
 
 <section class="alt" id="deploy">
   <div class="wrap">
-    <div class="soon">
-      <span class="pill">Coming soon</span>
-      <h2 style="margin-top:14px">Deployment instructions</h2>
-      <p class="muted" style="max-width:60ch;margin-inline:auto">Step-by-step setup - importing the solution, creating the Entra groups and spending policies, provisioning the SharePoint lists and configuring app settings - will be published here shortly.</p>
+    <p class="kicker">Deployment guide</p>
+    <h2>Deploy it in your own tenant</h2>
+    <p class="lede">Step-by-step instructions to deploy the SharePoint data layer, Entra security groups, Cowork spending policies and the Power Platform solution. Allow around 90 minutes end to end. Everything you need - the <a href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">solution package</a> and the <a href="https://github.com/BojanBuhac/Cowork-plans/tree/main/solution">five CSV files</a> - is in the <code>/solution</code> folder of the repository.</p>
+
+    <div class="prereq">
+      <h3>Before you start - you need</h3>
+      <p>SharePoint Administrator (or site-creation rights), Entra ID Groups Administrator (to create security groups), Copilot/Cowork admin rights (to create spending policies), and System Administrator on the target Power Platform environment. Complete the steps <strong>in order</strong> - later steps depend on IDs produced by earlier ones.</p>
+      <p style="margin-top:12px"><strong>Download first:</strong> the <a href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">solution package</a> (Step 8) and the <a href="https://github.com/BojanBuhac/Cowork-plans/tree/main/solution">five CSV files</a> (Step 2). Both are in the same <code>/solution</code> folder of the repository.</p>
     </div>
+
+    <div class="toc">
+      <h3>Deployment steps</h3>
+      <ol>
+        <li><a href="#d1">Create the SharePoint communication site</a></li>
+        <li><a href="#d2">Download and import the five CSV files as lists</a></li>
+        <li><a href="#d3">Make <code>Title</code> optional on two lists</a></li>
+        <li><a href="#d4">Create the five security groups (four plans + Pause)</a></li>
+        <li><a href="#d5">Copy each security group ID from the URL</a></li>
+        <li><a href="#d6">Populate Security Group ID on the Cowork Plans list</a></li>
+        <li><a href="#d7">Create the Cowork spending policies</a></li>
+        <li><a href="#d8">Import the solution into Power Platform</a></li>
+        <li><a href="#d9">Post-deployment verification checklist</a></li>
+      </ol>
+    </div>
+
+    <div class="step" id="d1">
+      <h3><span class="num">1</span> Create the SharePoint communication site</h3>
+      <div><span class="meta">SharePoint Administrator or site-creation permission · ~5 minutes</span></div>
+      <ol>
+        <li>Go to <code>https://&lt;tenant&gt;.sharepoint.com</code> and select <strong>Create site</strong>.</li>
+        <li>Choose <strong>Communication site</strong>. Do <strong>not</strong> choose Team site - this site must <strong>not</strong> be connected to a Microsoft 365 group or Teams; it is used purely as a data repository.</li>
+        <li>Pick the <strong>Standard communication site</strong> template (blank is fine).</li>
+        <li>Complete the fields in the table below.</li>
+        <li>Select <strong>Create site</strong> and note the final URL - you will need it in Step 8.</li>
+      </ol>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Field</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Site name</strong></td><td>Cowork Plan Management</td></tr>
+          <tr><td><strong>Site address</strong></td><td><code>/sites/CoworkPlanManagement</code></td></tr>
+          <tr><td><strong>Site owner</strong></td><td>The account performing this deployment (the “deployment account”)</td></tr>
+          <tr><td><strong>Language</strong></td><td>English</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note"><strong>Record this now:</strong> Site URL = <code>https://&lt;tenant&gt;.sharepoint.com/sites/CoworkPlanManagement</code>. Every later step and the Power Platform connection reference it.</p>
+    </div>
+
+    <div class="step" id="d2">
+      <h3><span class="num">2</span> Import the five CSV files as lists</h3>
+      <div><span class="meta">Site Owner · ~15 minutes · repeat five times</span></div>
+      <h4>2.0 Download the five CSV files</h4>
+      <p class="muted">They live in the same <a href="https://github.com/BojanBuhac/Cowork-plans/tree/main/solution">solution folder</a> as the package you downloaded. Right-click each link and choose <strong>Save link as…</strong>, keeping the file name exactly as it is:</p>
+      <ul>
+        <li><a href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/Departments.csv" download>Departments.csv</a></li>
+        <li><a href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/Cowork%20Plans.csv" download>Cowork Plans.csv</a></li>
+        <li><a href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/Department%20plans.csv" download>Department plans.csv</a></li>
+        <li><a href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/Cowork%20Plan%20Requests.csv" download>Cowork Plan Requests.csv</a></li>
+        <li><a href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/Cowork%20Plan%20App%20Settings.csv" download>Cowork Plan App Settings.csv</a></li>
+      </ul>
+      <p class="warn">Each CSV was exported from SharePoint and carries its own column schema in the first line, so SharePoint recreates the correct column types automatically. <strong>Do not open, re-save or edit the CSV files in Excel</strong> - that strips the schema line and every column imports as plain text.</p>
+      <h4>2.1 Import procedure (per file)</h4>
+      <ol>
+        <li>On the site home page select <strong>+ New → List</strong>.</li>
+        <li>Select <strong>From CSV</strong>.</li>
+        <li>Select <strong>Upload file</strong>, choose the CSV, and review the detected column types on the preview screen.</li>
+        <li>Enter the list name <strong>exactly</strong> as shown below - the flows and app reference these names literally, including spacing and capitalisation.</li>
+        <li>Clear the <strong>Show in site navigation</strong> checkbox (optional; keeps the site tidy).</li>
+        <li>Select <strong>Create</strong> and wait for the list to finish provisioning before importing the next one.</li>
+      </ol>
+      <h4>2.2 Import in this order</h4>
+      <div class="tablewrap"><table>
+        <thead><tr><th>#</th><th>CSV file</th><th>List name to use</th><th>Rows</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><code>Departments.csv</code></td><td><strong>Departments</strong></td><td>0 (structure only)</td><td>Department list with an approver per department</td></tr>
+          <tr><td>2</td><td><code>Cowork Plans.csv</code></td><td><strong>Cowork Plans</strong></td><td>4 plans</td><td>Plan catalogue: name, description, credit limit, power level, security group ID</td></tr>
+          <tr><td>3</td><td><code>Department plans.csv</code></td><td><strong>Department plans</strong></td><td>0 (structure only)</td><td>Mapping table: which plans each department may request</td></tr>
+          <tr><td>4</td><td><code>Cowork Plan Requests.csv</code></td><td><strong>Cowork Plan Requests</strong></td><td>0 (structure only)</td><td>Transaction list - every user request, approval and expiry</td></tr>
+          <tr><td>5</td><td><code>Cowork Plan App Settings.csv</code></td><td><strong>Cowork Plan App Settings</strong></td><td>6 settings</td><td>Global switches: approvals, pause group, admin e-mails, vacation phrases</td></tr>
+        </tbody>
+      </table></div>
+      <h4>2.3 Verify the import</h4>
+      <ul>
+        <li><strong>Cowork Plans</strong> must contain 4 items: Getting Started, Business, Business Plus, Business Catalyst.</li>
+        <li><strong>Cowork Plan App Settings</strong> must contain 6 items: Pause Group, Vacation phrases, Pause Enabled, Manager approval, Admins M365 Email, Downgrade approval.</li>
+        <li><strong>Cowork Plan Requests</strong> must show all 20 columns (Title, EntraID, Email, Plan, Agents and services, User limit, SecurityGroupID, PreviousSecurityGroupID, Manager Name, Manager Email, Request Status, DepartmentID, Department, Approval needed, Validity, Until, Business justification, Pause, Pause until, ExpiryProcessed).</li>
+      </ul>
+      <p class="note">If a list imported with the wrong columns, delete it (<strong>Settings → List settings → Delete this list</strong>), then re-import from the original untouched CSV.</p>
+    </div>
+
+    <div class="step" id="d3">
+      <h3><span class="num">3</span> Make <code>Title</code> optional on the Department plans and Cowork Plan Requests lists</h3>
+      <div><span class="meta">Site Owner · ~4 minutes · repeat on both lists</span></div>
+      <p class="muted">Neither list uses the built-in <code>Title</code> column - <strong>Department plans</strong> only stores the DepartmentID/PlanID pair, and <strong>Cowork Plan Requests</strong> records the requester in its own columns. <code>Title</code> is mandatory by default, which makes the Power Automate “create item” action fail. Turn the requirement off on <strong>both</strong> lists:</p>
+      <ol>
+        <li>Open the <strong>Department plans</strong> list.</li>
+        <li>Select the gear icon → <strong>List settings</strong>. (If you only see the modern pane, choose <strong>List settings → More library settings</strong>.)</li>
+        <li>Under <strong>Columns</strong>, select <strong>Title</strong>.</li>
+        <li>Under <strong>Require that this column contains information</strong>, select <strong>No</strong>.</li>
+        <li>Select <strong>OK</strong>.</li>
+        <li><strong>Repeat steps 1–5 on the <em>Cowork Plan Requests</em> list.</strong></li>
+      </ol>
+      <p class="warn">Both lists must be changed. If <code>Title</code> is left mandatory on <strong>Cowork Plan Requests</strong>, every plan request fails at the point the flow writes the row - and the failure surfaces only when a user submits a request, not during deployment.</p>
+    </div>
+
+    <div class="step" id="d4">
+      <h3><span class="num">4</span> Create the five security groups in Microsoft Entra ID</h3>
+      <div><span class="meta">Groups Administrator or User Administrator · ~10 minutes</span></div>
+      <p class="muted">One security group is required per plan, plus a fifth group for the pause capability - <strong>five groups in total, all of them required</strong>. The Power Automate flows add and remove users from these groups, and every Cowork spending policy is targeted at one of them.</p>
+      <p class="muted">The <strong>pause group</strong> is where users are moved when their consumption is temporarily suspended (for example while they are on vacation or leave). It carries its own spending policy with the minimum credit allowance, so a paused user keeps access but consumes almost nothing until the flow moves them back to their normal plan group.</p>
+      <h4>4.1 Create each group</h4>
+      <ol>
+        <li>Go to <code>https://entra.microsoft.com</code> → <strong>Groups → All groups → New group</strong>.</li>
+        <li>Complete the form using the values below.</li>
+        <li>Select <strong>Create</strong> and repeat for every group in table 4.2.</li>
+      </ol>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Field</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Group type</strong></td><td>Security</td></tr>
+          <tr><td><strong>Group name</strong></td><td>See table 4.2</td></tr>
+          <tr><td><strong>Membership type</strong></td><td><strong>Assigned</strong> (must not be dynamic - the flow manages membership)</td></tr>
+          <tr><td><strong>Entra roles can be assigned</strong></td><td>No</td></tr>
+          <tr><td><strong>Owners</strong></td><td>The account performing this deployment</td></tr>
+          <tr><td><strong>Members</strong></td><td>Leave empty</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note"><strong>Why the owner matters:</strong> add the deploying account as <strong>group Owner</strong> on all five groups. A group owner can add and remove members through the Office 365 Groups / Entra connector <strong>without</strong> any tenant-level admin consent, so the Power Automate flows run under that identity with no extra permissions or application registration.</p>
+      <h4>4.2 Groups to create</h4>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Group name</th><th>Used for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Cowork - Getting Started</strong></td><td>Plan 1 - 3,000 credits / month per user</td></tr>
+          <tr><td><strong>Cowork - Business</strong></td><td>Plan 2 - 10,000 credits / month per user</td></tr>
+          <tr><td><strong>Cowork - Business Plus</strong></td><td>Plan 3 - 50,000 credits / month per user</td></tr>
+          <tr><td><strong>Cowork - Business Catalyst</strong></td><td>Plan 4 - no credit limit</td></tr>
+          <tr><td><strong>Cowork - Paused</strong></td><td><strong>Required.</strong> Group 5 - users temporarily paused (vacation/leave). Gets the pause spending policy with the minimum credit allowance. Its object ID must be entered as the <strong>Value</strong> of the <strong>Pause Group</strong> item in Cowork Plan App Settings (Step 6.1).</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="step" id="d5">
+      <h3><span class="num">5</span> Copy each security group ID from the URL</h3>
+      <div><span class="meta">Groups reader · ~3 minutes</span></div>
+      <ol>
+        <li>In the Entra admin centre, open <strong>Groups → All groups</strong> and select a group.</li>
+        <li>Look at the browser address bar. The URL ends with the group’s object ID (a GUID), for example <code>…/GroupDetailsMenuBlade/~/Overview/groupId/ab36b72a-3f84-4eb4-a217-542b04d0ce63</code>.</li>
+        <li>Copy everything after <code>/groupId/</code> - that 36-character GUID is the <strong>Security Group ID</strong>. (The same value appears on the group’s <strong>Overview</strong> page as <strong>Object Id</strong>; either source is fine.)</li>
+        <li>Record each GUID against its plan - you will paste them in Steps 6 and 7.</li>
+      </ol>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Plan</th><th>Group name</th><th>Security Group ID (paste yours here)</th></tr></thead>
+        <tbody>
+          <tr><td>Getting Started</td><td>Cowork - Getting Started</td><td>&nbsp;</td></tr>
+          <tr><td>Business</td><td>Cowork - Business</td><td>&nbsp;</td></tr>
+          <tr><td>Business Plus</td><td>Cowork - Business Plus</td><td>&nbsp;</td></tr>
+          <tr><td>Business Catalyst</td><td>Cowork - Business Catalyst</td><td>&nbsp;</td></tr>
+          <tr><td>Pause (no plan)</td><td>Cowork - Paused</td><td>&nbsp;</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="step" id="d6">
+      <h3><span class="num">6</span> Populate Security Group ID on the Cowork Plans list</h3>
+      <div><span class="meta">Site Owner · ~5 minutes</span></div>
+      <p class="warn">The imported <strong>Cowork Plans</strong> list already carries the GUIDs from the source tenant. They are <strong>not valid in your tenant</strong> and must be replaced with the IDs you collected in Step 5.</p>
+      <ol>
+        <li>Open the <strong>Cowork Plans</strong> list.</li>
+        <li>Switch to <strong>Edit in grid view</strong> so you can paste directly into cells.</li>
+        <li>For each of the four rows, replace the value in the <strong>Security Group ID</strong> column with the GUID of the matching group.</li>
+        <li>Select <strong>Exit grid view</strong> to save.</li>
+      </ol>
+      <div class="tablewrap"><table>
+        <thead><tr><th>ID</th><th>Title</th><th>Power level</th><th>Replace Security Group ID with</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Getting Started</td><td>1</td><td>ID of <strong>Cowork - Getting Started</strong></td></tr>
+          <tr><td>2</td><td>Business</td><td>2</td><td>ID of <strong>Cowork - Business</strong></td></tr>
+          <tr><td>3</td><td>Business Plus</td><td>3</td><td>ID of <strong>Cowork - Business Plus</strong></td></tr>
+          <tr><td>4</td><td>Business Catalyst</td><td>4</td><td>ID of <strong>Cowork - Business Catalyst</strong></td></tr>
+        </tbody>
+      </table></div>
+      <h4>6.1 Update the App Settings list at the same time</h4>
+      <p class="muted">Open <strong>Cowork Plan App Settings</strong> and set the tenant-specific values. Every item is edited the same way: select the row, choose <strong>Edit</strong>, and replace the text in the <strong>Value</strong> column. The two mandatory tenant-specific entries are <strong>Pause Group</strong> and <strong>Admins M365 Email</strong> - the application will not work correctly until both are set.</p>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Title</th><th>Set Value to</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Pause Group</strong> (required)</td><td>The object ID of your <strong>Cowork - Paused</strong> security group, copied from the URL in Step 5. Paste the GUID only, with no spaces, quotation marks or the group name.</td></tr>
+          <tr><td><strong>Admins M365 Email</strong> (required)</td><td>The e-mail addresses of the primary application administrators - the people who own the app after deployment and receive its administrative notifications. Separate multiple addresses with a semicolon and no spaces, e.g. <code>first.admin@contoso.com;second.admin@contoso.com</code>. Replace the sample addresses that arrived with the import; do not leave them in place.</td></tr>
+          <tr><td><strong>Manager approval</strong></td><td><code>true</code> to require manager approval for upgrades, otherwise <code>false</code></td></tr>
+          <tr><td><strong>Downgrade approval</strong></td><td><code>true</code> to require approval for downgrades, otherwise <code>false</code></td></tr>
+          <tr><td><strong>Pause Enabled</strong></td><td><code>true</code> to enable automatic pausing on vacation, otherwise <code>false</code></td></tr>
+          <tr><td><strong>Vacation phrases</strong></td><td>Comma-separated keywords detected in out-of-office messages (adjust for your region/languages)</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">Enter <code>true</code>/<code>false</code> in lower case exactly as shown - the flows compare the text literally.</p>
+      <h4>6.2 Fill in Departments and Department plans</h4>
+      <ul>
+        <li>In <strong>Departments</strong>, add one item per department: <strong>Title</strong> = department name exactly as it appears in the users’ Entra <strong>Department</strong> attribute; <strong>Approver</strong> = the person who approves requests for that department.</li>
+        <li>In <strong>Department plans</strong>, add one item per allowed combination: <strong>DepartmentID</strong> = the ID of the department row, <strong>PlanID</strong> = the ID of the plan row (1–4). A department only sees the plans listed here.</li>
+      </ul>
+      <figure>
+        <a class="zoom" href="#lb-departments2" aria-label="Enlarge the department plans screenshot"><img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/05-CP-Department-plans.png" alt="Department plans screen showing which plans each department may request."></a>
+        <figcaption>The result in the app: each department sees only the plans mapped to it.</figcaption>
+      </figure>
+    </div>
+
+    <div class="step" id="d7">
+      <h3><span class="num">7</span> Create the Cowork spending policies</h3>
+      <div><span class="meta">Copilot / Cowork administrator · ~10 minutes</span></div>
+      <p class="muted">Each plan’s credit allowance is enforced by a spending policy scoped to that plan’s security group. Create one policy per plan, in ascending order of generosity, plus a fifth <strong>pause policy</strong> for the pause group - <strong>five policies in total</strong>.</p>
+      <ol>
+        <li>Open the Cowork admin experience and go to <strong>Spending policies</strong> (or <strong>Billing → Spending policies</strong>, depending on your admin portal version).</li>
+        <li>Select <strong>New policy</strong> (or <strong>Create policy</strong>).</li>
+        <li><strong>Policy name</strong> - match the plan name so that reporting is readable.</li>
+        <li><strong>Assigned to</strong> - select the <strong>security group</strong> for that plan (search it by name; confirm the object ID matches the GUID recorded in Step 5).</li>
+        <li><strong>Limit</strong> - the monthly credit cap per user.</li>
+        <li>Save the policy and repeat for the remaining plans.</li>
+      </ol>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Policy name</th><th>Assign to security group</th><th>Monthly limit per user</th><th>Services in scope</th></tr></thead>
+        <tbody>
+          <tr><td>Cowork – Getting Started</td><td>Cowork - Getting Started</td><td>3,000 credits</td><td>Copilot Cowork, Work IQ API</td></tr>
+          <tr><td>Cowork – Business</td><td>Cowork - Business</td><td>10,000 credits</td><td>Copilot Cowork, Work IQ API</td></tr>
+          <tr><td>Cowork – Business Plus</td><td>Cowork - Business Plus</td><td>50,000 credits</td><td>Copilot Cowork, Work IQ API</td></tr>
+          <tr><td>Cowork – Business Catalyst</td><td>Cowork - Business Catalyst</td><td>No limit</td><td>Copilot Cowork, Work IQ API</td></tr>
+          <tr><td>Cowork – Paused</td><td>Cowork - Paused</td><td>The <strong>lowest allowance your portal permits</strong> - set the smallest selectable credit amount so paused users consume next to nothing</td><td>Copilot Cowork, Work IQ API</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note"><strong>How pausing works:</strong> when a user is paused, the flow removes them from their plan group (retaining it in <code>PreviousSecurityGroupID</code>) and adds them to <strong>Cowork - Paused</strong>, so the minimum-credit pause policy applies. When the pause ends, the flow reverses the move and the original plan policy takes effect again. Pausing is only active when <strong>Pause Enabled</strong> is <code>true</code> and <strong>Pause Group</strong> holds a valid group ID.</p>
+      <p class="warn">A user must belong to exactly <strong>one</strong> plan group at a time. The flow removes the previous group (kept in <code>PreviousSecurityGroupID</code>) before adding the new one - do not add users to these groups manually.</p>
+    </div>
+
+    <div class="step" id="d8">
+      <h3><span class="num">8</span> Import the solution into the Power Platform environment</h3>
+      <div><span class="meta">System Administrator on the target environment · ~20 minutes</span></div>
+      <h4>8.1 Prepare the environment</h4>
+      <ol>
+        <li>Go to the <strong>Power Platform admin centre</strong> (<code>https://admin.powerplatform.microsoft.com</code>) → <strong>Environments</strong>.</li>
+        <li>Use the dedicated environment for this application (create one with <strong>+ New</strong> if it does not exist: type <strong>Production</strong>, region matching your tenant, Dataverse enabled).</li>
+        <li>Confirm the deployment account has the <strong>System Administrator</strong> security role in that environment.</li>
+      </ol>
+      <h4>8.2 Get the solution package</h4>
+      <p class="muted">Download the ready-made package - no source environment needed:</p>
+      <p><a class="btn btn-primary" href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">⬇ CoworkPlan_1_0_0_9.zip</a> <span class="muted" style="font-size:.9rem">· <a href="https://github.com/BojanBuhac/Cowork-plans/blob/main/solution/CoworkPlan_1_0_0_9.zip">view on GitHub</a></span></p>
+      <p class="note">Some browsers flag .zip downloads - choose <strong>Keep</strong>. Do not unzip the file; Power Platform imports the .zip as-is.</p>
+      <p class="muted" style="font-size:.94rem">Exporting from your own environment instead? Open <code>make.powerapps.com</code> → <strong>Solutions</strong> → select the solution → <strong>Export solution</strong> → <strong>Publish</strong> all customisations → <strong>Next</strong> → choose <strong>Managed</strong> for production (<strong>Unmanaged</strong> only if you intend to keep customising) → <strong>Export</strong>.</p>
+      <h4>8.3 Import into the target environment</h4>
+      <ol>
+        <li>In <code>make.powerapps.com</code>, switch to the <strong>target</strong> environment (top-right environment picker).</li>
+        <li>Go to <strong>Solutions → Import solution → Browse</strong>, select <code>CoworkPlan_1_0_0_9.zip</code>, then <strong>Next</strong>.</li>
+        <li>On the connections page, create or select a connection for each connector used by the solution, signed in as the deployment account:
+          <ul>
+            <li><strong>SharePoint</strong> - access to the site from Step 1</li>
+            <li><strong>Office 365 Users</strong> - reads manager and department attributes</li>
+            <li><strong>Office 365 Outlook</strong> - sends approval and notification e-mail</li>
+            <li><strong>Microsoft Entra ID / Office 365 Groups</strong> - adds and removes group members (works without extra permissions because the account is a group owner, Step 4)</li>
+            <li><strong>Approvals</strong> - manager approval requests</li>
+          </ul>
+        </li>
+        <li>On the environment variables page, enter the tenant-specific values shown below.</li>
+        <li>Select <strong>Import</strong> and wait for completion (typically 5–15 minutes).</li>
+      </ol>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Variable</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>SharePoint site URL</td><td><code>https://&lt;tenant&gt;.sharepoint.com/sites/CoworkPlanManagement</code></td></tr>
+          <tr><td>Cowork Plans list</td><td><code>Cowork Plans</code></td></tr>
+          <tr><td>Cowork Plan Requests list</td><td><code>Cowork Plan Requests</code></td></tr>
+          <tr><td>Departments list</td><td><code>Departments</code></td></tr>
+          <tr><td>Department plans list</td><td><code>Department plans</code></td></tr>
+          <tr><td>App settings list</td><td><code>Cowork Plan App Settings</code></td></tr>
+        </tbody>
+      </table></div>
+      <figure>
+        <a class="zoom" href="#lb-envvars" aria-label="Enlarge the environment variables screenshot"><img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/20-Deploy-Environment-Vars.png" alt="Solution import screen showing the environment variables to complete with the SharePoint site URL and list names."></a>
+        <figcaption>The environment variables page during solution import - point each variable at your own site and lists.</figcaption>
+      </figure>
+      <h4>8.4 Turn on the flows and share the app</h4>
+      <ol>
+        <li>Open the imported solution → <strong>Cloud flows</strong>. Any flow shown as <strong>Off</strong> must be turned <strong>On</strong> (open the flow → <strong>Turn on</strong>).</li>
+        <li>Open the app → <strong>Share</strong> → add the user population (for example a broad “All employees” group) with <strong>User</strong> permission.</li>
+        <li>Confirm the app’s SharePoint data sources resolve without errors, then <strong>Publish</strong> the app.</li>
+      </ol>
+    </div>
+
+    <div class="step" id="d9">
+      <h3><span class="num">9</span> Post-deployment verification checklist</h3>
+      <div><span class="meta">~15 minutes · run this end to end before announcing the app</span></div>
+      <ul class="checklist">
+        <li>Communication site exists and is <strong>not</strong> group/Teams connected.</li>
+        <li>All five lists exist with the exact names; Cowork Plans has 4 rows and App Settings has 6 rows.</li>
+        <li><code>Title</code> is no longer mandatory on <strong>Department plans</strong> - or on <strong>Cowork Plan Requests</strong>.</li>
+        <li>Five security groups exist, membership type <strong>Assigned</strong>, deployment account is Owner on each.</li>
+        <li>Every Security Group ID in Cowork Plans matches a group in <strong>this</strong> tenant (no leftover source-tenant GUIDs).</li>
+        <li><strong>Pause Group</strong> in App Settings holds the object ID of the <strong>Cowork - Paused</strong> group.</li>
+        <li><strong>Admins M365 Email</strong> in App Settings holds the primary administrators’ addresses (sample addresses removed).</li>
+        <li>Departments and Department plans populated for at least one pilot department.</li>
+        <li>Five spending policies created (four plans + pause), each targeting the correct security group; the pause policy uses the minimum credit allowance.</li>
+        <li>Solution imported, all connections green, all flows On, app published and shared.</li>
+      </ul>
+      <p class="note"><strong>Smoke test:</strong> submit a plan request as a pilot user → the approval reaches the manager → approve → a new row lands in Cowork Plan Requests with the correct SecurityGroupID → the user appears in the matching Entra group within a few minutes → the spending policy applies to that user.</p>
+      <p class="note"><strong>Rollback:</strong> if the smoke test fails, turn the flows Off, correct the configuration (usually a list name, an environment variable, or a mismatched group ID), turn the flows back On and re-run the test. No data is lost - all state lives in the SharePoint lists.</p>
+    </div>
+
+    <p class="muted" style="text-align:center;margin-top:26px">Follow the steps in order · further sections to be added.</p>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <p><strong>Cowork Plans</strong> - shared free of charge for organisations worldwide.</p>
+    <p><strong>Cowork Plans</strong> - shared free of charge for organisations worldwide. <a href="#deploy">Deployment guide</a> · <a href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">Download the solution (CoworkPlan_1_0_0_9.zip)</a> · <a href="https://github.com/BojanBuhac/Cowork-plans">Project on GitHub</a></p>
     <p class="disclaimer">Provided as-is, without warranty of any kind. Screenshots show sample data from a demonstration environment. Microsoft, Microsoft 365, Copilot, Power Apps, SharePoint and Microsoft Entra are trademarks of the Microsoft group of companies.</p>
   </div>
 </footer>
 
 <!-- Full-size viewers -->
+<div class="lightbox" id="lb-departments2"><a class="lb-backdrop" href="#d6" aria-label="Close"></a><a class="lb-close" href="#d6" aria-label="Close">&times;</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/05-CP-Department-plans.png" alt="Full size: department plans screen."></div>
+<div class="lightbox" id="lb-envvars"><a class="lb-backdrop" href="#d8" aria-label="Close"></a><a class="lb-close" href="#d8" aria-label="Close">&times;</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/20-Deploy-Environment-Vars.png" alt="Full size: solution import environment variables page."></div>
 <div class="lightbox" id="lb-dashboard"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/01-CP-Dashboard.png" alt="Full size: plan dashboard."></div>
 <div class="lightbox" id="lb-request"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/02-CP-Request-plan.png" alt="Full size: confirm your request dialog."></div>
 <div class="lightbox" id="lb-pause"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/03-CP-Pause-plan.png" alt="Full size: confirm your pause request dialog."></div>

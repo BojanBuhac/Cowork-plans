@@ -36,7 +36,7 @@
     }
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;scroll-padding-block-start:76px}
   body{
     margin:0;
     background:var(--bg);
@@ -153,6 +153,48 @@
   }
   .lb-close:hover{background:rgba(255,255,255,.3)}
 
+
+  /* ---- Two-page navigation (CSS only) ---- */
+  .topnav{
+    position:sticky;inset-block-start:0;z-index:50;
+    background:color-mix(in srgb, var(--surface) 88%, transparent);
+    backdrop-filter:saturate(180%) blur(12px);
+    border-block-end:1px solid var(--line);
+  }
+  .navinner{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:62px;flex-wrap:wrap}
+  .brand{
+    font-weight:800;letter-spacing:-.02em;font-size:1.08rem;
+    color:var(--ink);text-decoration:none;white-space:nowrap;
+  }
+  .brand span{color:var(--brand)}
+  .navlinks{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .navlink{
+    padding:8px 14px;border-radius:10px;text-decoration:none;
+    font-size:.95rem;font-weight:600;color:var(--ink-soft);
+    border:1px solid transparent;white-space:nowrap;
+  }
+  .navlink:hover{color:var(--ink);background:var(--surface-2)}
+  .navcta{
+    color:var(--brand);border-color:var(--brand);
+  }
+  .navcta:hover{background:var(--brand);color:#fff}
+  .page{display:block}
+  #page-deploy{display:none}
+  body:has(#page-deploy:target) #page-home,
+  body:has(#page-deploy :target) #page-home{display:none}
+  body:has(#page-deploy:target) #page-deploy,
+  body:has(#page-deploy :target) #page-deploy{display:block}
+  /* active tab */
+  .nav-home{color:var(--brand);background:var(--brand-soft)}
+  body:has(#page-deploy:target) .nav-home,
+  body:has(#page-deploy :target) .nav-home{color:var(--ink-soft);background:transparent}
+  body:has(#page-deploy:target) .nav-deploy,
+  body:has(#page-deploy :target) .nav-deploy{color:var(--brand);background:var(--brand-soft)}
+  @media (max-width:560px){
+    .navinner{min-height:0;padding-block:10px}
+    .navlink{padding:7px 11px;font-size:.9rem}
+  }
+
   /* Deployment guide */
   .prereq{
     background:var(--brand-soft);border:1px solid var(--line);
@@ -224,6 +266,8 @@
   .step figure{margin:18px 0 0}
   @media print{
     .lightbox{display:none !important}
+    .topnav{display:none}
+    .page,#page-deploy{display:block !important}
     .step,.toc{box-shadow:none;break-inside:avoid}
     .toc ol{columns:1}
     .lightbox{display:none !important}
@@ -237,18 +281,25 @@
 </head>
 <body>
 
+<nav class="topnav">
+  <div class="wrap navinner">
+    <a class="brand" href="#page-home">Cowork <span>Plans</span></a>
+    <div class="navlinks">
+      <a class="navlink nav-home" href="#page-home">Overview</a>
+      <a class="navlink nav-deploy" href="#page-deploy">Deployment guide</a>
+      <a class="navlink navcta" href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">&#11015; Download</a>
+    </div>
+  </div>
+</nav>
+
+<div id="page-home" class="page">
 <header class="hero">
   <div class="wrap hero-grid">
     <div>
       <span class="pill">Cowork Plans · Power Apps canvas app</span>
       <h1>Give everyone a clear, self-service way to manage their Copilot Cowork plan.</h1>
       <p class="lede">Cowork Plans puts plan visibility, requests, pauses and approvals in one simple app - so business users choose the plan that fits the way they work, managers approve in a click, and administrators keep everything aligned with organisational policy.</p>
-      <div class="cta-row">
-        <a class="btn btn-ghost" href="#tour">Take the tour</a>
-        <a class="btn btn-primary" href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">⬇ Download the solution</a>
-        <a class="btn btn-ghost" href="#deploy">Deployment guide</a>
-      </div>
-      <p style="margin-top:18px"><span class="badge-free">🎁 Free to use and share - worldwide</span></p>
+      <p style="margin-top:22px"><span class="badge-free">🎁 Free to use and share - worldwide</span></p>
     </div>
     <img class="shot" src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/01-CP-Dashboard.png" alt="Cowork Plans dashboard showing Getting Started, Business and Business Plus plan cards with monthly credit allowances and a Request plan button.">
   </div>
@@ -408,12 +459,31 @@
     </div>
   </div>
 </section>
+<div class="lightbox" id="lb-dashboard"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/01-CP-Dashboard.png" alt="Full size: plan dashboard."></div>
+<div class="lightbox" id="lb-request"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/02-CP-Request-plan.png" alt="Full size: confirm your request dialog."></div>
+<div class="lightbox" id="lb-pause"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/03-CP-Pause-plan.png" alt="Full size: confirm your pause request dialog."></div>
+<div class="lightbox" id="lb-departments"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/05-CP-Department-plans.png" alt="Full size: department plans screen."></div>
+<div class="lightbox" id="lb-settings"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/04-CP-App-settings.png" alt="Full size: app settings screen."></div>
+<div class="lightbox" id="lb-entra"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/06-CP-Entra-Groups.png" alt="Full size: Entra groups."></div>
+<div class="lightbox" id="lb-spending"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/07-CP-Spending-plans.png" alt="Full size: spending policies."></div>
+<div class="lightbox" id="lb-lists"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/08-CP-SPO-lists.png" alt="Full size: SharePoint lists."></div>
+</div>
 
-<section class="alt" id="deploy">
+<div id="page-deploy" class="page">
+<header class="hero">
   <div class="wrap">
-    <p class="kicker">Deployment guide</p>
-    <h2>Deploy it in your own tenant</h2>
-    <p class="lede">Step-by-step instructions to deploy the SharePoint data layer, Entra security groups, Cowork spending policies and the Power Platform solution. Allow around 90 minutes end to end. Everything you need - the <a href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">solution package</a> and the <a href="https://github.com/BojanBuhac/Cowork-plans/tree/main/solution">five CSV files</a> - is in the <code>/solution</code> folder of the repository.</p>
+    <span class="pill">Deployment guide</span>
+    <h1>Deploy Cowork Plans in your own tenant</h1>
+    <p class="lede">Nine steps to stand up the SharePoint data layer, Entra security groups, Cowork spending policies and the Power Platform solution. Allow around 90 minutes end to end.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">&#11015; Download the solution</a>
+      <a class="btn btn-ghost" href="https://github.com/BojanBuhac/Cowork-plans/tree/main/solution">&#11015; Download the 5 CSV files</a>
+    </div>
+  </div>
+</header>
+
+<section id="deploy">
+  <div class="wrap">
 
     <div class="prereq">
       <h3>Before you start - you need</h3>
@@ -717,25 +787,17 @@
     <p class="muted" style="text-align:center;margin-top:26px">Follow the steps in order · further sections to be added.</p>
   </div>
 </section>
+<div class="lightbox" id="lb-departments2"><a class="lb-backdrop" href="#d6" aria-label="Close"></a><a class="lb-close" href="#d6" aria-label="Close">&times;</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/05-CP-Department-plans.png" alt="Full size: department plans screen."></div>
+<div class="lightbox" id="lb-envvars"><a class="lb-backdrop" href="#d8" aria-label="Close"></a><a class="lb-close" href="#d8" aria-label="Close">&times;</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/20-Deploy-Environment-Vars.png" alt="Full size: solution import environment variables page."></div>
+</div>
 
 <footer>
   <div class="wrap">
-    <p><strong>Cowork Plans</strong> - shared free of charge for organisations worldwide. <a href="#deploy">Deployment guide</a> · <a href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">Download the solution (CoworkPlan_1_0_0_9.zip)</a> · <a href="https://github.com/BojanBuhac/Cowork-plans">Project on GitHub</a></p>
+    <p><strong>Cowork Plans</strong> - shared free of charge for organisations worldwide. <a href="#page-deploy">Deployment guide</a> · <a href="https://github.com/BojanBuhac/Cowork-plans/raw/main/solution/CoworkPlan_1_0_0_9.zip">Download the solution (CoworkPlan_1_0_0_9.zip)</a> · <a href="https://github.com/BojanBuhac/Cowork-plans">Project on GitHub</a></p>
     <p class="disclaimer">Provided as-is, without warranty of any kind. Screenshots show sample data from a demonstration environment. Microsoft, Microsoft 365, Copilot, Power Apps, SharePoint and Microsoft Entra are trademarks of the Microsoft group of companies.</p>
   </div>
 </footer>
 
-<!-- Full-size viewers -->
-<div class="lightbox" id="lb-departments2"><a class="lb-backdrop" href="#d6" aria-label="Close"></a><a class="lb-close" href="#d6" aria-label="Close">&times;</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/05-CP-Department-plans.png" alt="Full size: department plans screen."></div>
-<div class="lightbox" id="lb-envvars"><a class="lb-backdrop" href="#d8" aria-label="Close"></a><a class="lb-close" href="#d8" aria-label="Close">&times;</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/20-Deploy-Environment-Vars.png" alt="Full size: solution import environment variables page."></div>
-<div class="lightbox" id="lb-dashboard"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/01-CP-Dashboard.png" alt="Full size: plan dashboard."></div>
-<div class="lightbox" id="lb-request"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/02-CP-Request-plan.png" alt="Full size: confirm your request dialog."></div>
-<div class="lightbox" id="lb-pause"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/03-CP-Pause-plan.png" alt="Full size: confirm your pause request dialog."></div>
-<div class="lightbox" id="lb-departments"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/05-CP-Department-plans.png" alt="Full size: department plans screen."></div>
-<div class="lightbox" id="lb-settings"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/04-CP-App-settings.png" alt="Full size: app settings screen."></div>
-<div class="lightbox" id="lb-entra"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/06-CP-Entra-Groups.png" alt="Full size: Entra groups."></div>
-<div class="lightbox" id="lb-spending"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/07-CP-Spending-plans.png" alt="Full size: spending policies."></div>
-<div class="lightbox" id="lb-lists"><a class="lb-backdrop" href="#tour" aria-label="Close"></a><a class="lb-close" href="#tour" aria-label="Close">×</a><img src="https://raw.githubusercontent.com/BojanBuhac/Cowork-plans/refs/heads/main/images/08-CP-SPO-lists.png" alt="Full size: SharePoint lists."></div>
 
 </body>
 </html>
